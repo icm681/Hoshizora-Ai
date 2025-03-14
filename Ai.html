@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoshizora AI</title>
+</head>
+<body>
+    <h2>Hoshizora AI</h2>
+    <input type="text" id="userInput" placeholder="Tanya sesuatu...">
+    <button onclick="askAI()">Kirim</button>
+    <p id="response"></p>
+
+    <script>
+        async function askAI() {
+            let userMessage = document.getElementById("userInput").value;
+            let responseText = document.getElementById("response");
+
+            let apiKey = "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"; // GANTI API KEY DI SINI
+
+            let response = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-4",
+                    messages: [
+                        { "role": "system", "content": "Kamu adalah AI bernama Hoshizora." },
+                        { "role": "user", "content": userMessage }
+                    ]
+                })
+            });
+
+            let data = await response.json();
+            responseText.innerText = data.choices[0].message.content;
+        }
+    </script>
+</body>
+</html>
